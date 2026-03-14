@@ -1,0 +1,548 @@
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 84% 5%;
+    --primary: 222 84% 5%;
+    --primary-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 222 84% 5%;
+    --radius: 0.5rem;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222 84% 5%;
+    /* Dora button ring (default: dark sweep for light backgrounds) */
+    --dora-ring-1: hsl(222 28% 22% / 0.14);
+    --dora-ring-2: hsl(222 28% 22% / 0.28);
+    --dora-ring-3: hsl(222 28% 22% / 0.42);
+    --dora-ring-4: hsl(222 28% 22% / 0.52);
+    --dora-ring-static: hsl(222 28% 22% / 0.12);
+  }
+  .dark {
+    --background: 222 84% 4%;
+    --foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222 84% 5%;
+  }
+}
+
+[data-theme="marketing"] {
+  /* Dora-style dark hero: cosmic gradient, high-contrast type */
+  --background: 235 50% 6%;
+  --foreground: 0 0% 98%;
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
+  --muted-foreground: 220 15% 65%;
+  --border: 220 20% 18%;
+  --input: 220 20% 18%;
+  --ring: 262 83% 58%;
+  --accent: 220 25% 14%;
+  --accent-foreground: 0 0% 98%;
+  /* Dora button rotating ring: light sweep for dark background */
+  --dora-ring-1: hsl(0 0% 100% / 0.06);
+  --dora-ring-2: hsl(0 0% 100% / 0.18);
+  --dora-ring-3: hsl(0 0% 100% / 0.38);
+  --dora-ring-4: hsl(0 0% 100% / 0.5);
+  --dora-ring-static: hsl(0 0% 100% / 0.06);
+}
+
+/* Light marketing theme: Dora-inspired – off-white base, high-contrast type, clean card */
+[data-theme="marketing-light"] {
+  --background: 240 18% 98%;
+  --foreground: 222 35% 11%;
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
+  --muted-foreground: 222 12% 40%;
+  --border: 220 14% 91%;
+  --input: 220 14% 93%;
+  --ring: 262 83% 58%;
+  --accent: 220 18% 95%;
+  --accent-foreground: 222 35% 11%;
+  /* Dora button rotating ring: dark sweep so it’s visible on light background */
+  --dora-ring-1: hsl(222 28% 22% / 0.14);
+  --dora-ring-2: hsl(222 28% 22% / 0.28);
+  --dora-ring-3: hsl(222 28% 22% / 0.42);
+  --dora-ring-4: hsl(222 28% 22% / 0.52);
+  --dora-ring-static: hsl(222 28% 22% / 0.12);
+}
+
+/* App light theme: same as welcome white (marketing-light) for text visibility and background sync */
+[data-theme="app"] {
+  --background: 240 18% 98%;
+  --foreground: 222 35% 11%;
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
+  --muted-foreground: 222 12% 40%;
+  --border: 220 14% 91%;
+  --input: 220 14% 93%;
+  --ring: 262 83% 58%;
+  --accent: 220 18% 95%;
+  --accent-foreground: 222 35% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 35% 11%;
+  --dora-ring-1: hsl(222 28% 22% / 0.14);
+  --dora-ring-2: hsl(222 28% 22% / 0.28);
+  --dora-ring-3: hsl(222 28% 22% / 0.42);
+  --dora-ring-4: hsl(222 28% 22% / 0.52);
+  --dora-ring-static: hsl(222 28% 22% / 0.12);
+}
+
+/* App shell: same cosmic background as login/signup; respects dark/light (next-themes) */
+.app-shell-bg {
+  min-height: 100vh;
+  position: relative;
+  color: hsl(var(--foreground));
+}
+.app-shell-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* Light app shell: same gradient as welcome white (hero-cosmic-light) */
+.app-shell-bg::before {
+  background: linear-gradient(
+    165deg,
+    hsl(30 60% 98%) 0%,
+    hsl(240 25% 98%) 35%,
+    hsl(220 30% 97%) 70%,
+    hsl(262 22% 96%) 100%
+  );
+}
+.app-shell-bg {
+  background: linear-gradient(
+    165deg,
+    hsl(30 60% 98%) 0%,
+    hsl(240 25% 98%) 35%,
+    hsl(220 30% 97%) 70%,
+    hsl(262 22% 96%) 100%
+  );
+}
+/* Dark app shell: cosmic gradient (matches hero-cosmic) */
+.dark .app-shell-bg,
+.dark .app-shell-bg::before {
+  background: linear-gradient(
+    180deg,
+    hsl(235 50% 8%) 0%,
+    hsl(235 45% 5%) 40%,
+    hsl(220 40% 3%) 100%
+  );
+}
+.dark .app-shell-bg::before {
+  background-image: radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      hsl(262 80% 40% / 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(circle at 20% 30%, hsl(200 60% 50% / 0.04) 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, hsl(262 70% 50% / 0.03) 0%, transparent 20%);
+}
+
+/* App theme tokens when dark (match marketing/login palette) */
+.dark [data-theme="app"] {
+  --background: 235 50% 6%;
+  --foreground: 0 0% 98%;
+  --primary: var(--brand);
+  --primary-foreground: var(--brand-foreground);
+  --muted-foreground: 220 15% 65%;
+  --border: 220 20% 18%;
+  --input: 220 20% 18%;
+  --ring: 262 83% 58%;
+  --accent: 220 25% 14%;
+  --accent-foreground: 0 0% 98%;
+  --card: 220 30% 12%;
+  --card-foreground: 0 0% 98%;
+  /* Dashboard palette dark: slightly brighter for contrast on dark bg */
+  --dashboard-arrived: 217 91% 65%;
+  --dashboard-forms: 38 92% 55%;
+  --dashboard-eligibility: 25 95% 58%;
+  --dashboard-ready: 160 84% 45%;
+  --dashboard-provider: 263 70% 65%;
+  --dashboard-checkout: 43 96% 60%;
+  --dashboard-done: 220 9% 60%;
+  --chart-1: 217 91% 65%;
+  --chart-2: 160 84% 45%;
+  --chart-3: 38 92% 55%;
+  --chart-4: 263 70% 65%;
+  --chart-5: 25 95% 58%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-background text-foreground font-body antialiased;
+}
+
+/* App main content: ensure headings and text are visible (same pattern as sidebar) */
+[data-theme="app"] main {
+  color: hsl(var(--foreground));
+}
+[data-theme="app"] main h1,
+[data-theme="app"] main h2,
+[data-theme="app"] main h3 {
+  color: hsl(var(--foreground));
+}
+[data-theme="app"] main .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+
+/* App / dashboard: glass panels (light = welcome white style, dark = cosmic) */
+[data-theme="app"] .app-glass-panel {
+  background: hsl(var(--background) / 0.85);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+}
+.dark [data-theme="app"] .app-glass-panel {
+  background: hsl(var(--background) / 0.4);
+  border-color: hsl(0 0% 100% / 0.1);
+  color: hsl(var(--foreground));
+}
+
+/* Sidebar DentFlow brand: glassy touch similar to Sign out (btn-dora-glass) */
+.sidebar-brand-glass {
+  background: linear-gradient(135deg, hsl(24 100% 65% / 0.12), hsl(222 50% 25% / 0.12));
+  box-shadow: 0 0 0 1.5px var(--dora-ring-static);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.dark .sidebar-brand-glass {
+  background: linear-gradient(135deg, hsl(24 100% 65% / 0.08), hsl(222 50% 25% / 0.12));
+  box-shadow: 0 0 0 1.5px hsl(0 0% 100% / 0.12);
+}
+
+/* DentFlow D mark only: filled glass like Sign out (btn-dora-glass) */
+.brand-d-mark {
+  position: relative;
+  background: linear-gradient(135deg, hsl(24 100% 65% / 0.12), hsl(222 50% 25% / 0.12));
+  box-shadow: 0 0 0 1.5px var(--dora-ring-static);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.dark .brand-d-mark {
+  background: linear-gradient(135deg, hsl(24 100% 65% / 0.08), hsl(222 50% 25% / 0.12));
+  box-shadow: 0 0 0 1.5px hsl(0 0% 100% / 0.12);
+}
+.brand-d-mark-inner {
+  margin: 2px;
+  background: linear-gradient(90deg, var(--brand-gradient-start), var(--brand-gradient-end));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 1px 0 0 hsl(0 0% 100% / 0.25) inset,
+    0 -1px 0 0 hsl(0 0% 0% / 0.15) inset;
+}
+
+/* Glass surface for marketing/welcome */
+.glass-surface {
+  background: hsl(var(--glass-bg));
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid hsl(var(--glass-border));
+  border-radius: var(--radius-lg);
+}
+
+/* Auth (marketing) dark card: slick glass, 32px radius, clear border */
+[data-theme="marketing"] .glass-surface {
+  border-radius: var(--radius-card);
+  background: hsl(220 20% 12% / 0.85);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  border: 1px solid hsl(0 0% 100% / 0.12);
+  box-shadow:
+    0 0 0 1px hsl(0 0% 100% / 0.05) inset,
+    0 24px 48px -12px hsl(0 0% 0% / 0.5);
+}
+.dark .glass-surface {
+  background: hsl(var(--card) / 0.45);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border: 1px solid hsl(0 0% 100% / 0.2);
+  box-shadow:
+    0 0 0 1px hsl(0 0% 100% / 0.05) inset,
+    0 0 20px 0 hsl(0 0% 100% / 0.06);
+}
+[data-theme="marketing-light"] .glass-surface {
+  border-radius: min(var(--radius-card), 1.5rem);
+}
+
+/* Light marketing: card with soft palette gradient + clear focus (lift, subtle inner highlight) */
+[data-theme="marketing-light"] .glass-surface {
+  background: linear-gradient(
+    180deg,
+    hsl(0 0% 100%) 0%,
+    hsl(30 40% 99.5%) 30%,
+    hsl(240 20% 99%) 100%
+  );
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid hsl(220 14% 91%);
+  box-shadow:
+    0 1px 0 0 hsl(0 0% 100% / 0.8) inset,
+    0 1px 2px hsl(220 20% 90% / 0.4),
+    0 8px 32px -8px hsl(220 30% 20% / 0.08),
+    0 16px 48px -16px hsl(220 30% 20% / 0.04);
+}
+
+/* Dashboard status pills: theme-aware (light/dark) */
+[data-theme="app"] .status-pill-arrived { background: hsl(var(--dashboard-arrived) / 0.18); color: hsl(var(--dashboard-arrived)); border: 1px solid hsl(var(--dashboard-arrived) / 0.35); }
+[data-theme="app"] .status-pill-forms { background: hsl(var(--dashboard-forms) / 0.18); color: hsl(var(--dashboard-forms)); border: 1px solid hsl(var(--dashboard-forms) / 0.35); }
+[data-theme="app"] .status-pill-eligibility { background: hsl(var(--dashboard-eligibility) / 0.18); color: hsl(var(--dashboard-eligibility)); border: 1px solid hsl(var(--dashboard-eligibility) / 0.35); }
+[data-theme="app"] .status-pill-ready { background: hsl(var(--dashboard-ready) / 0.18); color: hsl(var(--dashboard-ready)); border: 1px solid hsl(var(--dashboard-ready) / 0.35); }
+[data-theme="app"] .status-pill-provider { background: hsl(var(--dashboard-provider) / 0.18); color: hsl(var(--dashboard-provider)); border: 1px solid hsl(var(--dashboard-provider) / 0.35); }
+[data-theme="app"] .status-pill-checkout { background: hsl(var(--dashboard-checkout) / 0.18); color: hsl(var(--dashboard-checkout)); border: 1px solid hsl(var(--dashboard-checkout) / 0.35); }
+[data-theme="app"] .status-pill-done { background: hsl(var(--dashboard-done) / 0.2); color: hsl(var(--dashboard-done)); border: 1px solid hsl(var(--dashboard-done) / 0.35); }
+
+/* App (protected) pages light: same glass card as welcome white theme; ensure text is visible */
+[data-theme="app"] .glass-surface {
+  border-radius: min(var(--radius-card), 1.5rem);
+  background: linear-gradient(
+    180deg,
+    hsl(0 0% 100%) 0%,
+    hsl(30 40% 99.5%) 30%,
+    hsl(240 20% 99%) 100%
+  );
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid hsl(220 14% 91%);
+  box-shadow:
+    0 1px 0 0 hsl(0 0% 100% / 0.8) inset,
+    0 1px 2px hsl(220 20% 90% / 0.4),
+    0 8px 32px -8px hsl(220 30% 20% / 0.08),
+    0 16px 48px -16px hsl(220 30% 20% / 0.04);
+  color: hsl(var(--card-foreground));
+}
+[data-theme="app"] .glass-surface h1,
+[data-theme="app"] .glass-surface h2,
+[data-theme="app"] .glass-surface h3,
+[data-theme="app"] .glass-surface p,
+[data-theme="app"] .glass-surface a {
+  color: inherit;
+}
+[data-theme="app"] .glass-surface .text-muted-foreground {
+  color: hsl(var(--muted-foreground));
+}
+.dark [data-theme="app"] .glass-surface {
+  background: hsl(var(--card) / 0.45);
+  backdrop-filter: blur(var(--glass-blur-md));
+  -webkit-backdrop-filter: blur(var(--glass-blur-md));
+  border: 1px solid hsl(0 0% 100% / 0.2);
+  box-shadow:
+    0 0 0 1px hsl(0 0% 100% / 0.05) inset,
+    0 0 20px 0 hsl(0 0% 100% / 0.06);
+}
+
+/* Lighter card surface for schedule/dashboard – better readability and less heavy */
+[data-theme="app"] .app-card-light {
+  background: hsl(var(--card) / 0.92);
+  border: 1px solid hsl(var(--border));
+}
+.dark [data-theme="app"] .app-card-light {
+  background: hsl(var(--card) / 0.6);
+  border: 1px solid hsl(0 0% 100% / 0.12);
+}
+
+/* Auth (marketing): inputs and secondary buttons – clean, not mashed */
+[data-theme="marketing"] .glass-surface input[type="email"],
+[data-theme="marketing"] .glass-surface input[type="password"],
+[data-theme="marketing"] .glass-surface input[type="text"] {
+  background: hsl(0 0% 100% / 0.08);
+  border-color: hsl(0 0% 100% / 0.18);
+  color: hsl(0 0% 98%);
+}
+[data-theme="marketing"] .glass-surface input::placeholder {
+  color: hsl(0 0% 70%);
+}
+[data-theme="marketing"] .glass-surface input:focus {
+  background: hsl(0 0% 100% / 0.1);
+  border-color: hsl(0 0% 100% / 0.25);
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(262 83% 58% / 0.3);
+}
+[data-theme="marketing"] .auth-secondary-btn {
+  min-height: 44px;
+  border-radius: 9999px;
+  border: 1px solid hsl(0 0% 100% / 0.2);
+  background: hsl(0 0% 100% / 0.06);
+  color: hsl(0 0% 98%);
+  font-weight: 500;
+  transition: background 0.2s, border-color 0.2s;
+}
+[data-theme="marketing"] .auth-secondary-btn:hover {
+  background: hsl(0 0% 100% / 0.1);
+  border-color: hsl(0 0% 100% / 0.28);
+}
+
+/* Dora-style cosmic hero background (dark) */
+.hero-cosmic {
+  background: linear-gradient(
+    180deg,
+    hsl(235 50% 8%) 0%,
+    hsl(235 45% 5%) 40%,
+    hsl(220 40% 3%) 100%
+  );
+  position: relative;
+}
+.hero-cosmic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+      ellipse 120% 80% at 50% 0%,
+      hsl(262 80% 40% / 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(circle at 20% 30%, hsl(200 60% 50% / 0.04) 0%, transparent 25%),
+    radial-gradient(circle at 80% 70%, hsl(262 70% 50% / 0.03) 0%, transparent 20%);
+  pointer-events: none;
+}
+
+/* Light marketing: soft gradient in Dora palette + subtle pattern so card feels focused */
+.hero-cosmic-light {
+  background: linear-gradient(
+    165deg,
+    hsl(30 60% 98%) 0%,
+    hsl(240 25% 98%) 35%,
+    hsl(220 30% 97%) 70%,
+    hsl(262 22% 96%) 100%
+  );
+  position: relative;
+}
+/* Soft radial orbs + very subtle dot pattern (palette tints) for depth and focus */
+.hero-cosmic-light::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 20%, hsl(24 70% 95% / 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, hsl(220 35% 95% / 0.35) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 60% at 50% 0%, hsl(262 30% 96% / 0.5) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, hsl(220 18% 85% / 0.06) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 32px 32px;
+  pointer-events: none;
+}
+
+/* Visitor name: solid Dora orange, user-friendly emphasis */
+.text-dora-name {
+  color: #ff8040;
+  font-weight: 500;
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+}
+
+/* Brand gradient (same as Sign out / Dora glass): use for sidebar active, etc. */
+.bg-brand-gradient {
+  background: linear-gradient(90deg, var(--brand-gradient-start), var(--brand-gradient-end));
+  color: hsl(var(--brand-foreground));
+}
+
+/* Gradient text (wordmark) */
+.text-brand-gradient {
+  background: linear-gradient(90deg, var(--brand-gradient-start), var(--brand-gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Dora-style glass button: pill, gradient #ff8040 → #0c2354, outer ring + inner fill */
+.btn-dora-glass {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 0rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  color: #fff;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease;
+  overflow: hidden;
+  /* Outer: subtle gradient tint so the ring feels part of the button, not a white track */
+  background: linear-gradient(135deg, hsl(24 100% 65% / 0.12), hsl(222 50% 25% / 0.12));
+  box-shadow: 0 0 0 1.5px var(--dora-ring-static);
+}
+.dark .btn-dora-glass,
+[data-theme="marketing"] .btn-dora-glass {
+  background: linear-gradient(135deg, hsl(24 100% 65% / 0.08), hsl(222 50% 25% / 0.12));
+  box-shadow: 0 0 0 1.5px hsl(0 0% 100% / 0.12);
+}
+.btn-dora-glass:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 1.5px var(--dora-ring-2);
+}
+.dark .btn-dora-glass:hover,
+[data-theme="marketing"] .btn-dora-glass:hover {
+  box-shadow: 0 0 0 1.5px hsl(0 0% 100% / 0.2);
+}
+.btn-dora-glass:active {
+  transform: scale(0.98);
+}
+.btn-dora-glass .btn-dora-glass-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2px;
+  min-height: calc(44px - 4px);
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--dora-start), var(--dora-end));
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow:
+    0 1px 0 0 hsl(0 0% 100% / 0.25) inset,
+    0 -1px 0 0 hsl(0 0% 0% / 0.15) inset;
+}
+.btn-dora-glass:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--ring));
+}
+.btn-dora-glass:focus-visible .btn-dora-glass-inner {
+  /* keep inner visible when focus ring shows */
+}
+
+/* Compact Dora glass button for cards (e.g. Advance on schedule) */
+.btn-dora-glass-sm {
+  min-height: 36px;
+  padding: 0;
+  font-size: 0.75rem;
+}
+.btn-dora-glass-sm .btn-dora-glass-inner {
+  min-height: 32px;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+/* Optional: Dora-inspired border glow for marketing cards. Add .border-effect to a wrapper. */
+.border-effect {
+  position: relative;
+  border-radius: var(--radius-card);
+}
+.border-effect::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: var(--border-width);
+  background: linear-gradient(135deg, hsl(0 0% 100% / 0.15), hsl(0 0% 100% / 0.02));
+  border: 1px solid hsl(0 0% 100% / 0.2);
+  -webkit-mask: linear-gradient(#fff, #fff) padding-box, linear-gradient(#fff, #fff) border-box;
+  mask: linear-gradient(#fff, #fff) padding-box, linear-gradient(#fff, #fff) border-box;
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
